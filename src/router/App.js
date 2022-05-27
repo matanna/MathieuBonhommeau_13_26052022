@@ -1,12 +1,16 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes, useLocation } from "react-router";
 import { Error404, Home, Profil, SignIn } from "../pages";
 import { Footer, Header } from "../components";
+import Style from "./App.module.scss";
 
 function App() {
+  // For retrieve the current route
+  const location = useLocation();
+
   return (
-    <div className="App">
+    <div className={Style.App}>
       <Header />
-      <main>
+      <main className={location.pathname === "/" ? "" : "main bg-dark"}>
         <Routes>
           <Route path={"/"} element={<Home />} />
           <Route path={"/login"} element={<SignIn />} />
