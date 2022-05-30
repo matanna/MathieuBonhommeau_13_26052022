@@ -6,7 +6,6 @@ import Style from "./App.module.scss";
 function App() {
   // For retrieve the current route
   const location = useLocation();
-
   return (
     <div className={Style.App}>
       <Header />
