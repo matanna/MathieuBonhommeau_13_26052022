@@ -10,32 +10,31 @@ import {NavLink} from "react-router-dom";
  */
 const Header = (props) => {
   return (
-      <header>
-        <nav className={Style.mainNav}>
-          <NavLink className={Style.mainNavLogo} to="/">
-            <img
-                className={Style.mainNavLogoImage}
-                src={Logo}
-                alt="Argent Bank Logo"
-            />
-            <h1 className="sr-only">Argent Bank</h1>
+    <header>
+      <nav className={Style.mainNav}>
+        <NavLink className={Style.mainNavLogo} to="/">
+          <img
+            className={Style.mainNavLogoImage}
+            src={Logo}
+            alt="Argent Bank Logo"
+          />
+          <h1 className="sr-only">Argent Bank</h1>
+        </NavLink>
+
+        {/* A adapter en fonction de la connection de l'utilisateur - Sign in devient Sign out et le nom n'apparait pas si pas connecté */}
+        <div className={Style.signContainer}>
+          <NavLink className={Style.mainNavItem} to="/profil">
+            <i className="fa fa-user-circle"></i>
+            Tony
           </NavLink>
-
-          {/* A adapter en fonction de la connection de l'utilisateur - Sign in devient Sign out et le nom n'apparait pas si pas connecté */}
-          <div>
-            <NavLink className={Style.mainNavItem} to="/profil">
-              <i className="fa fa-user-circle"></i>
-              Tony
-            </NavLink>
-            <NavLink className={Style.mainNavItem} to="/login">
-              <i className="fa fa-sign-in"></i>
-              Sign In
-            </NavLink>
-          </div>
-          {/* -------------------------------------------------------------------------------------------------------------------------- */}
-
-        </nav>
-      </header>
+          <NavLink className={Style.mainNavItem} to="/login">
+            <i className="fa fa-sign-in"></i>
+            Sign In
+          </NavLink>
+        </div>
+        {/* -------------------------------------------------------------------------------------------------------------------------- */}
+      </nav>
+    </header>
   );
 };
 

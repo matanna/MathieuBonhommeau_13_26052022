@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Style from "./Home.module.scss";
 import { FeatureItem } from "../../components";
 import { IconChat, IconMoney, IconSecurity } from "../../assets";
 
 const Home = (props) => {
+  useEffect(() => {
+    document.title = "ArgentBank - Page d'accueil";
+  }, []);
+
   return (
     <>
       {/* Banner */}

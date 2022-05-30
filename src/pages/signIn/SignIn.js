@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Field } from "../../components";
 import Style from "./SignIn.module.scss";
 
 const SignIn = (props) => {
+  useEffect(() => {
+    document.title = "ArgentBank - Page SignIn";
+  }, []);
+
   return (
     <section className={Style.signInContent}>
       <i className={`fa fa-user-circle`}></i>
