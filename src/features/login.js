@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import axios from "../utils/axios-conf";
+import * as axios from "axios";
 
 const initialState = {
   isLogged: false,
@@ -9,35 +9,43 @@ const initialState = {
     email: "",
     password: "",
     rememberMe: false,
-    error: "",
+    error: {},
   },
 };
 
 export const setIsLogged = createAction("login/setIsLogged");
-export const setToken = createAction("login/setToken");
 
 export const setField = createAction("login/setField", (nameField, value) => ({
   payload: { nameField, value },
 }));
 
-export const loginUserPending = createAction("login/userPending");
-export const loginUserResolved = createAction("login/userResolved");
-export const loginUserRejected = createAction("login/userRejected");
+export const loginPending = createAction("login/pending");
+export const loginResolved = createAction("login/resolved");
+export const loginRejected = createAction("login/rejected");
 
-// Create a thunk with Redux thunk for use asynchronous function
+// Create a thunk with Redux thunk for use asynchronous function and get a token
 export const loginUser = (email, password) => {
-  console.log(email, password);
   return async (dispatch, getState) => {
-    dispatch(loginUserPending);
+    dispatch(loginPending);
     try {
-      const response = await axios.post("/user/login", {
-        email: email,
-        password: password,
-      });
-      const token = await response.json();
-      dispatch(loginUserResolved(token));
-    } catch (err) {
-      dispatch(loginUserRejected(err));
+      const response = await axios.post(
+        "http://localhost:3001/api/v1/user/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
+      const token = await response.data.body.token;
+      dispatch(loginResolved(token));
+      dispatch(setIsLogged());
+
+      if (!getState().login.user.rememberMe) {
+        dispatch(setField("email", ""));
+        dispatch(setField("password", ""));
+      }
+    } catch (e) {
+      const error = e.response.data;
+      dispatch(loginRejected(error));
     }
   };
 };
@@ -45,22 +53,20 @@ export const loginUser = (email, password) => {
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setIsLogged, (state) => {
+      if (state.isLogged) state.token = "";
       state.isLogged = !state.isLogged;
-    })
-    .addCase(setToken, (state, action) => {
-      state.token = action.payload;
     })
     .addCase(setField, (state, action) => {
       state.user[action.payload.nameField] = action.payload.value;
     })
-    .addCase(loginUserPending, (state) => {
+    .addCase(loginPending, (state) => {
       state.user.status = "pending";
     })
-    .addCase(loginUserResolved, (state, action) => {
+    .addCase(loginResolved, (state, action) => {
       state.user.status = "resolved";
       state.token = action.payload;
     })
-    .addCase(loginUserRejected, (state, action) => {
+    .addCase(loginRejected, (state, action) => {
       state.user.status = "rejected";
       state.user.error = action.payload;
     });

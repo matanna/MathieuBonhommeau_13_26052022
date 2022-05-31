@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { loginReducer } from "../features";
+import { apiUserReducer, loginReducer } from "../features";
 
 const store = configureStore({
   reducer: {
     login: loginReducer,
+    apiUser: apiUserReducer,
   },
 });
 

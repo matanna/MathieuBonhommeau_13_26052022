@@ -3,20 +3,41 @@ import { Field } from "../../components";
 import Style from "./SignIn.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSelector } from "../../utils/selectors";
-import { loginUser } from "../../features/login";
+import { loginUser, setField } from "../../features/login";
+import { useNavigate } from "react-router";
+import { getUserData } from "../../features/apiUser";
 
 const SignIn = (props) => {
   const dispatch = useDispatch();
-  const { user } = useSelector(loginSelector);
+  const navigate = useNavigate();
+  const { isLogged, user } = useSelector(loginSelector);
 
   useEffect(() => {
     document.title = "ArgentBank - Page SignIn";
   }, []);
 
+  useEffect(() => {
+    if (isLogged) {
+      navigate("/");
+      const getData = async () => {
+        await dispatch(getUserData());
+      };
+      getData();
+    }
+  }, [isLogged, navigate]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(user.password);
-    dispatch(loginUser(user.email, user.password));
+    const login = async () => {
+      await dispatch(loginUser(user.email, user.password));
+    };
+    login();
+  };
+
+  const handleChange = (e) => {
+    const value =
+      e.target.id === "rememberMe" ? e.target.checked : e.target.value;
+    dispatch(setField(e.target.id, value));
   };
 
   return (
@@ -24,9 +45,24 @@ const SignIn = (props) => {
       <i className={`fa fa-user-circle`}></i>
       <h1 className={Style.signInTitle}>Sign In</h1>
       <form>
-        <Field type="email" name="email" />
-        <Field type="password" name="password" />
-        <Field type="checkbox" name="rememberMe" />
+        <Field
+          type="email"
+          name="email"
+          user={user}
+          handleChange={handleChange}
+        />
+        <Field
+          type="password"
+          name="password"
+          user={user}
+          handleChange={handleChange}
+        />
+        <Field
+          type="checkbox"
+          name="rememberMe"
+          user={user}
+          handleChange={handleChange}
+        />
         <button
           type="submit"
           onClick={handleSubmit}
@@ -34,6 +70,7 @@ const SignIn = (props) => {
         >
           <span>Sign In</span>
         </button>
+        {user.error && <p className="text-error">{user.error.message}</p>}
       </form>
     </section>
   );

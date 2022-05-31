@@ -2,8 +2,10 @@ import React from "react";
 import Logo from "../../assets/argentBankLogo.png";
 import Style from "./Header.module.scss";
 import {NavLink} from "react-router-dom";
-import {useSelector} from "react-redux";
-import {loginSelector} from "../../utils/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {apiUserSelector, loginSelector} from "../../utils/selectors";
+import {setIsLogged} from "../../features/login";
+import {apiUserLogout} from "../../features/apiUser";
 
 /**
  * It returns a header with a logo, a link to the profile page, and a link to the login page
@@ -12,6 +14,13 @@ import {loginSelector} from "../../utils/selectors";
  */
 const Header = (props) => {
   const { isLogged } = useSelector(loginSelector);
+  const { user } = useSelector(apiUserSelector);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(setIsLogged());
+    dispatch(apiUserLogout());
+  };
 
   return (
     <header>
@@ -30,12 +39,15 @@ const Header = (props) => {
           <div className={Style.signContainer}>
             <NavLink className={Style.mainNavItem} to="/profil">
               <i className="fa fa-user-circle"></i>
-              Tony
+              {user.firstName}
             </NavLink>
-            <NavLink className={Style.mainNavItem} to="/login">
+            <div
+              className={`${Style.mainNavItem} ${Style.logout}`}
+              onClick={handleLogout}
+            >
               <i className="fa fa-sign-out"></i>
               Sign Out
-            </NavLink>
+            </div>
           </div>
         ) : (
           <div className={Style.signContainer}>
