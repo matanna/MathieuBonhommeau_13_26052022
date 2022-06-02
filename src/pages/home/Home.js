@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Style from "./Home.module.scss";
-import { FeatureItem } from "../../components";
-import { IconChat, IconMoney, IconSecurity } from "../../assets";
+import {FeatureItem} from "../../components";
+import {IconChat, IconMoney, IconSecurity} from "../../assets";
 
-const Home = (props) => {
+/**
+ * It renders a banner with a title and subtitle, and then renders a section with three feature items
+ * @returns {JSX.Element} A React component that renders a banner and a section with 3 feature items.
+ */
+const Home = () => {
   useEffect(() => {
     document.title = "ArgentBank - Page d'accueil";
   }, []);
@@ -41,7 +45,5 @@ const Home = (props) => {
     </>
   );
 };
-
-Home.propTypes = {};
 
 export default Home;

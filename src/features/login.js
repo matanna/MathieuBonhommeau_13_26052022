@@ -13,6 +13,7 @@ const initialState = {
   },
 };
 
+/* Actions for login feature */
 export const setIsLogged = createAction("login/setIsLogged");
 
 export const setField = createAction("login/setField", (nameField, value) => ({
@@ -50,6 +51,7 @@ export const loginUser = (email, password) => {
   };
 };
 
+/* Reducer */
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setIsLogged, (state) => {

@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
-import { Field } from "../../components";
+import React, {useEffect} from "react";
+import {Field} from "../../components";
 import Style from "./SignIn.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { loginSelector } from "../../utils/selectors";
-import { loginUser, setField } from "../../features/login";
-import { useNavigate } from "react-router";
-import { getUserData } from "../../features/apiUser";
+import {useDispatch, useSelector} from "react-redux";
+import {loginSelector} from "../../utils/selectors";
+import {loginUser, setField} from "../../features/login";
+import {useNavigate} from "react-router";
+import {apiUserSave, getUserData} from "../../features/apiUser";
 
-const SignIn = (props) => {
+/**
+ * It's a React component that renders a form to sign in a user
+ * @returns {JSX.Element} A function component
+ */
+const SignIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogged, user } = useSelector(loginSelector);
@@ -16,11 +20,15 @@ const SignIn = (props) => {
     document.title = "ArgentBank - Page SignIn";
   }, []);
 
+  /**
+   * If the user is logged, he is redirected on home page and the user dats are fetched from the api
+   */
   useEffect(() => {
     if (isLogged) {
       navigate("/");
       const getData = async () => {
         await dispatch(getUserData());
+        dispatch(apiUserSave());
       };
       getData();
     }
@@ -75,7 +83,5 @@ const SignIn = (props) => {
     </section>
   );
 };
-
-SignIn.propTypes = {};
 
 export default SignIn;

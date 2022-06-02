@@ -9,12 +9,11 @@ import {apiUserLogout} from "../../features/apiUser";
 
 /**
  * It returns a header with a logo, a link to the profile page, and a link to the login page
- * @param props
  * @returns {JSX.Element} A header with a navbar with a logo and two links.
  */
-const Header = (props) => {
+const Header = () => {
   const { isLogged } = useSelector(loginSelector);
-  const { user } = useSelector(apiUserSelector);
+  const { initialValues } = useSelector(apiUserSelector);
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -34,12 +33,12 @@ const Header = (props) => {
           <h1 className="sr-only">Argent Bank</h1>
         </NavLink>
 
-        {/* A adapter en fonction de la connection de l'utilisateur - Sign in devient Sign out et le nom n'apparait pas si pas connecté */}
+        {/* If the user is logged, his name and sign out icon are displayed otherwise only the login icon is displayed */}
         {isLogged ? (
           <div className={Style.signContainer}>
             <NavLink className={Style.mainNavItem} to="/profil">
               <i className="fa fa-user-circle"></i>
-              {user.firstName}
+              {initialValues.firstName}
             </NavLink>
             <div
               className={`${Style.mainNavItem} ${Style.logout}`}
@@ -57,13 +56,9 @@ const Header = (props) => {
             </NavLink>
           </div>
         )}
-
-        {/* -------------------------------------------------------------------------------------------------------------------------- */}
       </nav>
     </header>
   );
 };
-
-Header.propTypes = {};
 
 export default Header;

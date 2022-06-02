@@ -1,6 +1,14 @@
 import React from "react";
 import Style from "./Account.module.scss";
+import PropTypes from "prop-types";
 
+/**
+ * It takes in three props, and returns a section with a title, amount, and description
+ * @param nameAccount
+ * @param amount
+ * @param children
+ * @returns {JSX.Element} A section with a class of account.
+ */
 const Account = ({ nameAccount, amount, children }) => {
   return (
     <section className={Style.account}>
@@ -16,6 +24,9 @@ const Account = ({ nameAccount, amount, children }) => {
   );
 };
 
-Account.propTypes = {};
+Account.propTypes = {
+  nameAccount: PropTypes.string,
+  amount: PropTypes.string,
+};
 
 export default Account;

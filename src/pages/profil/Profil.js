@@ -1,13 +1,18 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Account from "../../components/account/Account";
-import { useSelector } from "react-redux";
-import { apiUserSelector, loginSelector } from "../../utils/selectors";
-import { Navigate } from "react-router";
-import { EditForm } from "../../components";
+import {useSelector} from "react-redux";
+import {loginSelector} from "../../utils/selectors";
+import {Navigate} from "react-router";
+import {EditForm} from "../../components";
 
-const Profil = (props) => {
+/**
+ * It returns a Navigate component if the user is not logged, otherwise it returns a div with a header and three Account
+ * components
+ * @returns {JSX.Element} A component that is a form to edit the user's information.
+ */
+const Profil = () => {
+  // For check if a user is logged or not
   const { isLogged } = useSelector(loginSelector);
-  const { user } = useSelector(apiUserSelector);
 
   useEffect(() => {
     document.title = "ArgentBank - Page Profil"; // Mettre le nom du user
@@ -34,7 +39,5 @@ const Profil = (props) => {
     </>
   );
 };
-
-Profil.propTypes = {};
 
 export default Profil;
