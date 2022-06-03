@@ -67,6 +67,7 @@ export const setUserData = (firstname, lastname) => {
           },
         }
       );
+      console.log(response);
       const updateUser = await response.data.body;
       dispatch(apiUserResolved(updateUser));
     } catch (e) {

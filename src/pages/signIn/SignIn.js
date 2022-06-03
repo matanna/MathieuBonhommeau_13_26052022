@@ -25,7 +25,7 @@ const SignIn = () => {
    */
   useEffect(() => {
     if (isLogged) {
-      navigate("/");
+      navigate("/profil");
       const getData = async () => {
         await dispatch(getUserData());
         dispatch(apiUserSave());

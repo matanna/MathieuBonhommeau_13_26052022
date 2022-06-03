@@ -11,6 +11,11 @@
   justify-content: center;
   gap: 0.5em;
 
+  @media (max-width: 700px) {
+    flex-direction: column;
+    padding: 0 1.5rem;
+  }
+
   input {
     border-radius: 5px;
     outline-color: #00bc77;
@@ -29,11 +34,20 @@
   justify-content: center;
   gap: 0.5em;
 
+  @media (max-width: 700px) {
+    justify-content: space-between;
+    padding: 0 1.5rem;
+  }
+
   button {
     border: 1px solid #00bc77;
     padding: 0.6em 3em;
     color: #00bc77;
     border-radius: 5px;
     font-weight: bold;
+
+    @media (max-width: 700px) {
+      padding: 0.4em 1.5em;
+    }
   }
 }
