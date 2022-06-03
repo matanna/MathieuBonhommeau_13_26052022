@@ -1,0 +1,366 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation for transactions endpoints
+  description: Contains all available API endpoints for get transactions and their details or update their informations
+  version: '2.0'
+  termsOfService: 'http://swagger.io/terms/'
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+paths:
+
+  /dealing:
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Transactions
+      description: API for get all dealings for the current month
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Retrieve all transactions successfully
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '403':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /dealing/{id}:
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Transaction
+      description: API for get all details for one transaction
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Retrieve one transaction successfully with all details
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+
+  /dealing/{id}/additionnal:
+    post:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Add additionnal informations
+      description: API for add additionnal informations for one transaction
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          required: true
+          name: body
+          schema:
+            $ref: '#/definitions/AddAdditionnalInfos'
+      responses:
+        '201':
+          description: Retrieve the transaction with just add new additionnal informations
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+    patch:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Update additionnal informations
+      description: API for update additionnal informations for one transaction
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          required: true
+          name: body
+          schema:
+            $ref: '#/definitions/UpdateAdditionnalInfos'
+      responses:
+        '200':
+          description: Retrieve the transaction with just updated additionnal informations
+          schema:
+            $ref: '#/definitions/TransactionResponse'
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+    delete:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Delete additionnal informations
+      description: API for delete additionnal informations for one transaction
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '200':
+          description: Retrieve the transaction with no additionnal informations
+          schema:
+            $ref: '#/definitions/TransactionResponseWithoutAdditionnal'
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+
+  /category:
+    get:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Categories
+      description: API for get all categories available in API for sort transactions
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Retrieve all categories successfully
+          schema:
+            $ref: '#/definitions/Categories'
+        '403':
+          description: Unauthorized
+        '500':
+          description: Server error
+    post:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Add new category
+      description: API for create a new category
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/CategoryName'
+      responses:
+        '201':
+          description: Retrieve the new category just created
+          schema:
+            $ref: '#/definitions/Categories'
+        '400':
+          description: Bad Request
+        '403':
+          description: Unauthorized
+        '500':
+          description: Server error
+
+  /category/{id}:
+    put:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Update a category
+      description: API for update category
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/CategoryName'
+      responses:
+        '200':
+          description: Retrieve the new category just updated
+          schema:
+            $ref: '#/definitions/Categories'
+        '400':
+          description: Bad Request
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+    delete:
+      security:
+        - Bearer: [ ]
+      tags:
+        - Transactions Module
+      summary: Update a category
+      description: API for delete category
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          required: true
+          name: id
+          type: integer
+      responses:
+        '204':
+          description: No Content - Category deleted successfully
+        '403':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Server error
+
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+
+definitions:
+  TransactionsResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: transaction id
+      date:
+        type: string
+        format: date
+        description: date of the transaction
+        example: "June 20th, 2020"
+      description:
+        type: string
+        description: transaction description
+      amount:
+        type: number
+        format: decimal
+        description: transaction amount
+  TransactionResponse:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: transaction id
+      date:
+        type: string
+        format: date
+        description: date of the transaction
+        example: "June 20th, 2020"
+      description:
+        type: string
+        description: transaction description
+      amount:
+        type: number
+        format: decimal
+        description: transaction amount
+      category:
+        type: string
+        description: transaction category
+      notes:
+        type: string
+        description: transaction notes
+      type:
+        type: string
+        description: transaction type
+  TransactionResponseWithoutAdditionnal:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: transaction id
+      date:
+        type: string
+        format: date
+        description: date of the transaction
+        example: "June 20th, 2020"
+      description:
+        type: string
+        description: transaction description
+      amount:
+        type: number
+        format: decimal
+        description: transaction amount
+  AddAdditionnalInfos:
+    type: object
+    required:
+      - 'category'
+      - 'notes'
+      - 'type'
+    properties:
+      category:
+        type: string
+        description: transaction category
+      notes:
+        type: string
+        minLength: 3
+        maxLength: 100
+        description: transaction notes
+      type:
+        type: string
+        description: transaction type
+  UpdateAdditionnalInfos:
+    type: object
+    properties:
+      category:
+        type: string
+        description: transaction category
+      notes:
+        type: string
+        minLength: 3
+        maxLength: 100
+        description: transaction notes
+      type:
+        type: string
+        description: transaction type
+  Categories:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: category id
+      name:
+        type: string
+        description: category name
+  CategoryName:
+    type: object
+    required:
+      - 'name'
+    properties:
+      name:
+        type: string
+        description: category name
