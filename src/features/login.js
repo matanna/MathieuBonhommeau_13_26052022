@@ -55,7 +55,10 @@ export const loginUser = (email, password) => {
 const reducer = createReducer(initialState, (builder) => {
   builder
     .addCase(setIsLogged, (state) => {
-      if (state.isLogged) state.token = "";
+      if (state.isLogged) {
+        state.token = "";
+        state.user.error = {};
+      }
       state.isLogged = !state.isLogged;
     })
     .addCase(setField, (state, action) => {

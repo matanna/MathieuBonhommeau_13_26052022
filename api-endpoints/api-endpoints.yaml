@@ -10,14 +10,29 @@ schemes:
   - http
 paths:
 
-  /dealing:
+  /dealings:
     get:
       security:
         - Bearer: [ ]
       tags:
         - Transactions Module
       summary: Transactions
-      description: API for get all dealings for the current month
+      description: API for get all dealings for the month choosed. If no parameters is specified, the current month is render
+      parameters:
+        - in: query
+          name: month
+          schema:
+            type: integer
+          required: true
+          description: The number of the month choosed
+          example: 3
+        - in: query
+          name: year
+          schema:
+            type: integer
+          required: true
+          description: The number of the year choosed
+          example: 2020
       produces:
         - application/json
       responses:
@@ -27,10 +42,12 @@ paths:
             $ref: '#/definitions/TransactionsResponse'
         '403':
           description: Unauthorized
+        '404':
+          description: Not Found
         '500':
           description: Server error
 
-  /dealing/{id}:
+  /dealings/{id}:
     get:
       security:
         - Bearer: [ ]
@@ -57,7 +74,7 @@ paths:
         '500':
           description: Server error
 
-  /dealing/{id}/additionnal:
+  /dealings/{id}/additionnal:
     post:
       security:
         - Bearer: [ ]
@@ -270,6 +287,9 @@ definitions:
         type: number
         format: decimal
         description: transaction amount
+      type:
+        type: string
+        description: transaction type
   TransactionResponse:
     type: object
     properties:
@@ -288,15 +308,15 @@ definitions:
         type: number
         format: decimal
         description: transaction amount
+      type:
+        type: string
+        description: transaction type
       category:
         type: string
         description: transaction category
       notes:
         type: string
         description: transaction notes
-      type:
-        type: string
-        description: transaction type
   TransactionResponseWithoutAdditionnal:
     type: object
     properties:
@@ -315,12 +335,14 @@ definitions:
         type: number
         format: decimal
         description: transaction amount
+      type:
+        type: string
+        description: transaction type
   AddAdditionnalInfos:
     type: object
     required:
       - 'category'
       - 'notes'
-      - 'type'
     properties:
       category:
         type: string
@@ -330,9 +352,6 @@ definitions:
         minLength: 3
         maxLength: 100
         description: transaction notes
-      type:
-        type: string
-        description: transaction type
   UpdateAdditionnalInfos:
     type: object
     properties:
@@ -344,9 +363,6 @@ definitions:
         minLength: 3
         maxLength: 100
         description: transaction notes
-      type:
-        type: string
-        description: transaction type
   Categories:
     type: object
     properties:

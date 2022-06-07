@@ -51,7 +51,7 @@ Open ``/docs/index.html`` and that's all
 
 ------------------------------------
 
-## Api transactions enpoints
+## Api transactions endpoints
 
 Launch this command in a terminal :
 `` npm run swagger `` &ensp;&ensp; This command create a docker container with swagger
