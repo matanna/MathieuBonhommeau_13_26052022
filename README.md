@@ -54,7 +54,7 @@ Open ``/docs/index.html`` and that's all
 ## Api transactions enpoints
 
 Launch this command in a terminal :
-`` docker-compose up `` &ensp;&ensp; This command create a docker container with swagger
+`` npm run swagger `` &ensp;&ensp; This command create a docker container with swagger
 
 The swagger doc is available at this address :
 http://localhost:5030
