@@ -21,18 +21,12 @@ paths:
       parameters:
         - in: query
           name: month
-          schema:
-            type: integer
-          required: true
-          description: The number of the month choosed
-          example: 3
+          type: integer
+          description: The number of the month choosed (3)
         - in: query
           name: year
-          schema:
-            type: integer
-          required: true
-          description: The number of the year choosed
-          example: 2020
+          type: integer
+          description: The number of the year choosed (2020)
       produces:
         - application/json
       responses:
@@ -74,43 +68,12 @@ paths:
         '500':
           description: Server error
 
-  /dealings/{id}/additionnal:
-    post:
-      security:
-        - Bearer: [ ]
-      tags:
-        - Transactions Module
-      summary: Add additionnal informations
-      description: API for add additionnal informations for one transaction
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: integer
-        - in: body
-          required: true
-          name: body
-          schema:
-            $ref: '#/definitions/AddAdditionnalInfos'
-      responses:
-        '201':
-          description: Retrieve the transaction with just add new additionnal informations
-          schema:
-            $ref: '#/definitions/TransactionResponse'
-        '403':
-          description: Unauthorized
-        '404':
-          description: Not Found
-        '500':
-          description: Server error
     patch:
       security:
         - Bearer: [ ]
       tags:
         - Transactions Module
-      summary: Update additionnal informations
+      summary: Update ONLY additionnal informations - Category and Notes
       description: API for update additionnal informations for one transaction
       produces:
         - application/json
@@ -123,39 +86,17 @@ paths:
           required: true
           name: body
           schema:
-            $ref: '#/definitions/UpdateAdditionnalInfos'
+            allOf:
+              - $ref: '#/definitions/UpdateCategory'
+              - $ref: '#/definitions/UpdateNote'
+          description: Only category and notes are updatable
       responses:
         '200':
           description: Retrieve the transaction with just updated additionnal informations
           schema:
             $ref: '#/definitions/TransactionResponse'
         '403':
-          description: Unauthorized
-        '404':
-          description: Not Found
-        '500':
-          description: Server error
-    delete:
-      security:
-        - Bearer: [ ]
-      tags:
-        - Transactions Module
-      summary: Delete additionnal informations
-      description: API for delete additionnal informations for one transaction
-      produces:
-        - application/json
-      parameters:
-        - in: path
-          required: true
-          name: id
-          type: integer
-      responses:
-        '200':
-          description: Retrieve the transaction with no additionnal informations
-          schema:
-            $ref: '#/definitions/TransactionResponseWithoutAdditionnal'
-        '403':
-          description: Unauthorized
+          description: Unauthorized when token is invalid or missing and when try to updated another field than notes or category
         '404':
           description: Not Found
         '500':
@@ -317,47 +258,15 @@ definitions:
       notes:
         type: string
         description: transaction notes
-  TransactionResponseWithoutAdditionnal:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: transaction id
-      date:
-        type: string
-        format: date
-        description: date of the transaction
-        example: "June 20th, 2020"
-      description:
-        type: string
-        description: transaction description
-      amount:
-        type: number
-        format: decimal
-        description: transaction amount
-      type:
-        type: string
-        description: transaction type
-  AddAdditionnalInfos:
-    type: object
-    required:
-      - 'category'
-      - 'notes'
-    properties:
-      category:
-        type: string
-        description: transaction category
-      notes:
-        type: string
-        minLength: 3
-        maxLength: 100
-        description: transaction notes
-  UpdateAdditionnalInfos:
+  UpdateCategory:
     type: object
     properties:
       category:
         type: string
         description: transaction category
+  UpdateNote:
+    type: object
+    properties:
       notes:
         type: string
         minLength: 3
