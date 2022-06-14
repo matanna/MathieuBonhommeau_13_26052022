@@ -102,7 +102,7 @@ paths:
         '500':
           description: Server error
 
-  /category:
+  /categories:
     get:
       security:
         - Bearer: [ ]
@@ -147,7 +147,7 @@ paths:
         '500':
           description: Server error
 
-  /category/{id}:
+  /categories/{id}:
     put:
       security:
         - Bearer: [ ]
